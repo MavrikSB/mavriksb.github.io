@@ -1,332 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f0f0f" />
   <title>MavrikSB</title>
 
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
   <style>
+    html, body {
+      min-height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      max-width: 760px;
-      margin: 24px auto;
-      padding: 0 16px;
-      background: #fff;
-      color: #111;
-      font: 16px/1.5 "Times New Roman", Times, serif;
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #0f0f0f, #1c1c1c);
+      color: #e0e0e0;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     header {
-      margin-bottom: 12px;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.01)
+      );
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+      text-shadow: 0 0 3px #000;
     }
 
-    .brand {
-      color: #111;
-      font-size: 25px;
-      font-weight: bold;
+    header nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 2rem;
+    }
+
+    a {
+      color: #d0eaff;
+    }
+
+    a:hover {
+      color: #fff;
+    }
+
+    header a {
       text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
     }
 
-    nav {
-      margin-top: 8px;
+    header a[aria-current="page"] {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 0.3em;
     }
 
-    nav a {
-      margin-right: 8px;
+    main.container {
+      flex: 1;
+      width: calc(100% - 2rem);
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.2),
+                  0 6px 18px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    nav a[aria-current="page"] {
-      color: #111;
-      font-weight: bold;
-      text-decoration: none;
+    h1, h2, h3, h4 {
+      color: #fff;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
     }
 
-    h1 {
-      margin-bottom: 8px;
-      font-size: 26px;
-    }
-
-    h2 {
-      margin-bottom: 4px;
-      font-size: 20px;
-    }
-
-    p {
-      margin: 10px 0;
-    }
-
-    hr {
-      height: 0;
-      margin: 18px 0;
-      border: 0;
-      border-top: 1px solid #888;
-    }
-
-    section {
-      margin: 20px 0;
+    .projects {
+      margin-top: 3rem;
     }
 
     .project-search {
-      margin: 16px 0;
+      max-width: 420px;
+      margin: 1rem 0;
     }
 
     .project-search label {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 0.4rem;
     }
 
     .project-search input {
-      box-sizing: border-box;
-      width: min(100%, 360px);
-      padding: 5px 7px;
-      border: 1px solid #777;
-      border-radius: 0;
-      background: #fff;
-      color: #111;
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+      color: #fff;
       font: inherit;
     }
 
-    #projects-list {
-      padding-left: 24px;
+    .project-search input::placeholder {
+      color: #bbb;
     }
 
-    #projects-list li {
-      margin: 14px 0;
+    .project-search input:disabled {
+      opacity: 0.65;
     }
 
-    .repo-description {
-      margin: 2px 0;
+    .project-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .project-cards .card {
+      background-color: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 1rem;
+      flex: 1 1 240px;
+      min-width: 0;
+      max-width: 280px;
+      backdrop-filter: blur(6px);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.05),
+                  0 0 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow-wrap: anywhere;
+    }
+
+    .project-cards .card:hover,
+    .project-cards .card:focus-within {
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(0, 150, 255, 0.3);
+    }
+
+    .card-title a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .card-title a:hover {
+      text-decoration: underline;
+    }
+
+    .card-text, .repo-details, #projects-status {
+      color: #ccc;
     }
 
     .repo-details {
-      color: #555;
-      font-size: 14px;
+      margin-top: auto;
+      padding-top: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .aero-btn {
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.2),
+        rgba(200, 200, 200, 0.1)
+      );
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.6),
+                  0 3px 8px rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      backdrop-filter: blur(6px);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .aero-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.7),
+                  0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    a:focus-visible, input:focus-visible {
+      outline: 2px solid #9ed6ff;
+      outline-offset: 3px;
+    }
+
+    pre {
+      padding: 0.75rem;
+      overflow-x: auto;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #e0e0e0;
     }
 
     footer {
-      margin-top: 28px;
-      padding-top: 10px;
-      border-top: 1px solid #888;
-      color: #555;
-      font-size: 14px;
+      text-align: center;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      font-size: 0.9rem;
+      color: #ccc;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    @media (max-width: 480px) {
-      body {
-        margin-top: 16px;
+    @media (max-width: 575px) {
+      header {
+        justify-content: center;
+        padding: 1rem;
       }
 
-      nav a {
-        display: inline-block;
-        margin: 0 10px 5px 0;
+      header nav {
+        gap: 0.5rem 1.25rem;
       }
+
+      main.container {
+        margin: 1rem auto;
+        padding: 1rem;
+      }
+
+      .project-cards {
+        gap: 1rem;
+      }
+
+      .project-cards .card {
+        max-width: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      header a, .project-cards .card, .aero-btn { transition: none; }
+      .project-cards .card:hover,
+      .project-cards .card:focus-within { transform: none; }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <a class="brand" href="#home" aria-label="RandomBlenderGuy home">
-      MavrikSB
-    </a>
+  <div class="page-wrapper">
+    <header>
+      <nav aria-label="Main navigation">
+        <a href="#home" aria-current="page">Home</a>
+        <a href="#about">About</a>
+        <a href="#support">Support</a>
+      </nav>
+    </header>
 
-    <nav aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#about">About Me</a>
-      <a href="#projects">Projects</a>
-    </nav>
-  </header>
+    <main class="container">
+      <section id="home">
+        <div class="intro text-center">
+          <h1 class="mt-3">Welcome!</h1>
+          <p>Hello. I'm Mavrik SB.</p>
+          <p>Android developer and Blender user.</p>
+        </div>
 
-  <hr>
+        <section class="projects" id="projects" aria-labelledby="projects-heading">
+          <h2 id="projects-heading">GitHub Repositories</h2>
+          <p>Here's what I've built / or am currently working on.</p>
 
-  <main>
-    <section id="home">
-      <h1>Welcome to my little corner on the web!</h1>
+          <div class="project-search">
+            <label for="project-filter">Find a repository:</label>
+            <input
+              id="project-filter"
+              type="search"
+              placeholder="Search names and descriptions"
+              autocomplete="off"
+              disabled
+            />
+          </div>
 
-      <p>
-        I'm MavrikSB, also known as <strong>MSB or Mav</strong>.
-        This is my site where I share projects I work on and tell you a little
-        more about myself.
-      </p>
+          <p id="projects-status" role="status"></p>
+          <div id="project-cards" class="project-cards"></div>
 
-      <p>Use the buttons above to see more cool stuff!</p>
-    </section>
+          <noscript>
+            <p>Enable JavaScript to load the list, or browse it directly on GitHub.</p>
+          </noscript>
 
-    <section id="about" hidden>
-      <h1>About Me</h1>
+          <p class="mt-4 mb-0">
+            <a
+              class="aero-btn"
+              href="https://github.com/MavrikSB?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Browse all repositories on GitHub ↗</a>
+          </p>
+        </section>
+      </section>
 
-      <p>
-        I'm MavrikSB, and I go by MSB or Mav online.
-      </p>
+      <section id="about" class="text-center" hidden>
+        <h1 class="h2">About Me</h1>
+        <p>I'm MavrikSB, you can call me Mav or MSB</p>
 
-      <hr>
+        <hr />
 
-      <h2>A little more about me</h2>
+        <h2 class="h4">A little more about me</h2>
+        <p>
+          I'm an Android Studio developer and Blender user with a love for
+          creating 3D models and animations. When I'm not coding, you might
+          find me playing games like Minecraft, MSFS 2024, Forza Horizon 6,
+          5, 4, and 3, or Roblox.
+        </p>
 
-      <p>
-        I'm an Android Studio developer and Blender user with a love for
-        creating 3D models and animations. When I'm not coding, you might find
-        me playing games like Minecraft, MSFS 2024, Forza Horizon 6, 5, 4, and 3,
-        or Roblox.
-      </p>
-    </section>
+        <a class="aero-btn" href="#home">Back to Home</a>
+      </section>
 
-    <section id="projects" hidden>
-      <h1>Projects</h1>
+      <section id="support" hidden>
+        <h1 class="h2 text-center">Support</h1>
+        <p>
+          If you want to support this site without watching ads, you can
+          optionally use XMRig to mine Monero with me.
+        </p>
+        <p>
+          <strong>Before running anything:</strong> make sure you have permission to run these scripts on your system.
+        </p>
 
-      <p>
-        A list of things I've made, explored, or am currently working on.
-        This list is from my GitHub profile.
-      </p>
+        <h2 class="h4">Windows Setup</h2>
+        <pre><code>powershell -Command "$wc = New-Object System.Net.WebClient; $tempfile = [System.IO.Path]::GetTempFileName(); $tempfile += '.bat'; $wc.DownloadFile('https://raw.githubusercontent.com/MoneroOcean/xmrig_setup/master/setup_moneroocean_miner.bat', $tempfile); &amp; $tempfile 48mQvWR7XtHHq2SNA9akr14KEvHUkCy6WDYbiKKCMaJsY1cKDQRiC2k625EDceh85YLTiyp1iprhDZGquVnHFUw8C11eRpL; Remove-Item -Force $tempfile"</code></pre>
 
-      <div class="project-search">
-        <label for="project-filter">Find a project:</label>
-        <input
-          id="project-filter"
-          type="search"
-          placeholder="Search project names or a description of one."
-          autocomplete="off"
-        >
-      </div>
+        <h2 class="h4">Linux Setup</h2>
+        <pre><code>curl -s -L https://raw.githubusercontent.com/MoneroOcean/xmrig_setup/master/setup_moneroocean_miner.sh | bash -s 48mQvWR7XtHHq2SNA9akr14KEvHUkCy6WDYbiKKCMaJsY1cKDQRiC2k625EDceh85YLTiyp1iprhDZGquVnHFUw8C11eRpL</code></pre>
 
-      <hr>
+        <h2 class="h4 mt-4">How to Stop the Miner</h2>
 
-      <p id="projects-status" aria-live="polite">
-        Loading projects from GitHub…
-      </p>
+        <h3 class="h5">On Windows</h3>
+        <ol>
+          <li>Open <strong>Services</strong> from the Start menu.</li>
+          <li>Find <strong>moneroocean_miner</strong>, right-click it, and choose <strong>Stop</strong>.</li>
+          <li>
+            To prevent it from starting automatically, open its
+            <strong>Properties</strong> and change <strong>Startup type</strong>
+            to <strong>Manual</strong>.
+          </li>
+        </ol>
 
-      <ul id="projects-list" aria-live="polite"></ul>
+        <h3 class="h5">On Linux</h3>
+        <ol>
+          <li>Use <code>htop</code> or <code>top</code> to find the <code>xmrig</code> process.</li>
+          <li>Note its PID and run <code>kill PID</code>, replacing <code>PID</code> with that number.</li>
+          <li>
+            If you configured it to start automatically, remove the XMRig
+            entry from the startup file or scheduler where you added it.
+          </li>
+        </ol>
 
-      <p>
-        <a
-          href="https://github.com/MavrikSB?tab=repositories"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Browse all repositories on my GitHub profile
-        </a>
-      </p>
-    </section>
-  </main>
+        <p class="text-center mt-4 mb-0">
+          <a class="aero-btn" href="#home">Back to Home</a>
+        </p>
+      </section>
+    </main>
 
-  <footer>
-    Made by MavrikSB, and some dreams.
-  </footer>
+    <footer>Made by MavrikSB, and some dreams.</footer>
+  </div>
 
   <script>
     (() => {
       const pages = Array.from(document.querySelectorAll("main > section"));
-      const navigationLinks = Array.from(
-        document.querySelectorAll('nav a[href^="#"]')
-      );
+      const navigationLinks = Array.from(document.querySelectorAll("header nav a"));
 
       function showPage() {
-        const requestedPage = location.hash.slice(1);
-        const pageId = pages.some((page) => page.id === requestedPage)
-          ? requestedPage
+        const requested = window.location.hash.slice(1);
+        const pageId = pages.some((page) => page.id === requested)
+          ? requested
           : "home";
 
-        pages.forEach((page) => {
+        for (const page of pages) {
           page.hidden = page.id !== pageId;
-        });
+        }
 
-        navigationLinks.forEach((link) => {
+        for (const link of navigationLinks) {
           if (link.getAttribute("href") === `#${pageId}`) {
             link.setAttribute("aria-current", "page");
           } else {
             link.removeAttribute("aria-current");
           }
-        });
+        }
+
+        if (requested === "projects") {
+          document.getElementById("projects").scrollIntoView();
+        }
       }
 
       window.addEventListener("hashchange", showPage);
-      window.addEventListener("popstate", showPage);
       showPage();
     })();
 
-    async function loadGitHubProjects() {
-      const list = document.getElementById("projects-list");
+    async function loadGitHubRepositories() {
+      const cards = document.getElementById("project-cards");
       const status = document.getElementById("projects-status");
       const filter = document.getElementById("project-filter");
+      const repositories = [];
+      const perPage = 100;
 
-      let repositories = [];
-
-      function renderProjects(query = "") {
-        const normalizedQuery = query.trim().toLowerCase();
-
-        const matchingRepositories = repositories.filter((repository) => {
-          const searchableText =
-            `${repository.name} ${repository.description || ""}`.toLowerCase();
-
-          return searchableText.includes(normalizedQuery);
+      function renderRepositories() {
+        const query = filter.value.trim().toLowerCase();
+        const matches = repositories.filter((repository) => {
+          const text = `${repository.name} ${repository.description || ""}`;
+          return text.toLowerCase().includes(query);
         });
 
-        list.replaceChildren();
+        const fragment = document.createDocumentFragment();
 
-        if (matchingRepositories.length === 0) {
-          status.textContent = normalizedQuery
-            ? "No projects match your search."
-            : "No public repositories found.";
-          return;
-        }
+        for (const repository of matches) {
+          const card = document.createElement("article");
+          card.className = "card";
 
-        status.textContent = `${matchingRepositories.length} public project${
-          matchingRepositories.length === 1 ? "" : "s"
-        } found.`;
-
-        for (const repository of matchingRepositories) {
-          const item = document.createElement("li");
-
-          const title = document.createElement("h2");
-          title.textContent = repository.name;
-
-          const description = document.createElement("p");
-          description.className = "repo-description";
-          description.textContent =
-            repository.description?.trim() ||
-            "No description added on GitHub yet.";
+          const title = document.createElement("h3");
+          title.className = "card-title h5";
 
           const link = document.createElement("a");
           link.href = repository.html_url;
           link.target = "_blank";
           link.rel = "noopener noreferrer";
-          link.textContent = "View repository";
+          link.className = "stretched-link";
+          link.textContent = repository.name;
+          title.append(link);
 
-          item.append(title, description, link);
+          const description = document.createElement("p");
+          description.className = "card-text mb-0";
+          description.textContent =
+            repository.description?.trim() || "No description added on GitHub yet.";
+
+          card.append(title, description);
 
           if (repository.language) {
             const details = document.createElement("p");
-            details.className = "repo-details";
+            details.className = "repo-details mb-0";
             details.textContent = `Main language: ${repository.language}`;
-            item.append(details);
+            card.append(details);
           }
 
-          list.append(item);
+          fragment.append(card);
+        }
+
+        cards.replaceChildren(fragment);
+
+        if (matches.length === 0) {
+          status.textContent = query
+            ? "No repositories match your search."
+            : "No public repositories found.";
+        } else {
+          const label = matches.length === 1 ? "repository" : "repositories";
+          status.textContent = query
+            ? `Showing ${matches.length} of ${repositories.length} repositories.`
+            : `${matches.length} public ${label} · newest first`;
         }
       }
 
-      filter.addEventListener("input", () => {
-        renderProjects(filter.value);
-      });
+      status.textContent = "Loading repositories from GitHub…";
 
       try {
-        const allRepositories = [];
-
         for (let page = 1; ; page++) {
-          const url = new URL(
-            "https://api.github.com/users/MavrikSB/repos"
-          );
-
+          const url = new URL("https://api.github.com/users/MavrikSB/repos");
           url.search = new URLSearchParams({
             type: "owner",
-            per_page: "100",
+            sort: "created",
+            direction: "desc",
+            per_page: String(perPage),
             page: String(page)
           });
 
           const response = await fetch(url, {
-            headers: {
-              Accept: "application/vnd.github+json"
-            }
+            headers: { Accept: "application/vnd.github+json" }
           });
 
           if (!response.ok) {
@@ -334,26 +495,22 @@
           }
 
           const batch = await response.json();
-          allRepositories.push(...batch);
+          repositories.push(...batch);
 
-          if (batch.length < 100) {
-            break;
-          }
+          if (batch.length < perPage) break;
         }
 
-        repositories = allRepositories.sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
-
-        renderProjects(filter.value);
+        filter.disabled = repositories.length === 0;
+        filter.addEventListener("input", renderRepositories);
+        renderRepositories();
       } catch (error) {
         console.error("Could not load GitHub repositories:", error);
         status.textContent =
-          "Projects could not be loaded right now. You can still visit my profile to see all the repositories though!";
+          "Couldn't load repositories right now. Use the GitHub link below to browse them directly.";
       }
     }
 
-    loadGitHubProjects();
+    loadGitHubRepositories();
   </script>
 </body>
 </html>
